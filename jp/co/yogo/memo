@@ -1,0 +1,13 @@
+
+ny = {
+    "latlng": (40.7128, 74.0059),
+    "seleb":[
+        "ウッディ・アレ",
+        "ジェイ",
+        "ケビン・ベーコン"
+    ],
+    "actual":{
+        "state": "new york",
+        "country": "america"
+    }
+}
