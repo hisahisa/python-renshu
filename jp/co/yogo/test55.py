@@ -4,6 +4,7 @@ import collections as ct
 import more_itertools as mit
 
 data_i = [
+    {"date": datetime.date(2013, 1, 1), "id": 99, "value1": 15},
     {"date": datetime.date(2013, 1, 1), "id": 99, "value1": 12, "value2": 14},
     {"date": datetime.date(2013, 1, 1), "id": 98, "value1": 13, "value2": 9},
     {"date": datetime.date(2013, 1, 2), "id": 99, "value1": 14, "value2": 8}
@@ -22,7 +23,8 @@ def kfunc(d):
 
 def vfunc(d):
     # 集計値の定義をするらしいいいいい。。
-    val = {k:v for k,v in d.items() if k.startswith("val")}
+    # val = {k:v for k,v in d.items() if k.startswith("val")} # value1, value2 集計を仕分けする
+    val = {'val':v for k,v in d.items() if k.startswith("val")}  # value* で一括集計したい
     return val
 
 def rfunc(lst):
