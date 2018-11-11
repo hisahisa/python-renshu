@@ -1,3 +1,6 @@
+"""
+読み込んだファイルから、特定の条件のみを抽出する
+"""
 import pandas as pd
 from io import StringIO
 
