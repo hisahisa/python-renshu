@@ -25,6 +25,10 @@ session = scoped_session(
     )
 )
 
+# modelで使用する
+Base = declarative_base()
+Base.query = session.query_property()
+
 class mysql_clazz:
 
     def __enter__(self):

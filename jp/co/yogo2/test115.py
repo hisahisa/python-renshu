@@ -1,10 +1,6 @@
 import sys
 from jp.co.yogo2.test114 import *
 
-# modelで使用する
-Base = declarative_base()
-Base.query = session.query_property()
-
 class User(Base):
     """
     ユーザモデル

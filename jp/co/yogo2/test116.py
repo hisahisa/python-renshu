@@ -1,5 +1,4 @@
 
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from sqlalchemy.dialects.mysql import insert
 from jp.co.yogo2.test115 import *
 
@@ -8,20 +7,6 @@ import time
 import os
 import getpass
 import pwd
-
-
-#url = 'mysql+pymysql://root:@localhost/test_db?charset=utf8'
-#engine = create_engine(url, echo=True)
-#metadata = MetaData()
-#metadata.bind = engine
-
-# menuテーブルの定義
-#menus = Table(
-#    'menus', metadata,
-#    Column('id', Integer, primary_key=True),
-#    Column('name', String),
-#    Column('kcal', Integer)
-#)
 
 insert_stmt_address = insert(Address).values([
     {'a_name': '東京都町田市15', 'zip': '195', 'zip2':'0061'},
@@ -45,27 +30,9 @@ on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(
     age=insert_stmt.inserted.age
 )
 
-
-#conn = engine.connect()
-
 # コネクションとセッションを結びつける
 
 with mysql_clazz() as s:
     s.execute(on_duplicate_key_stmt)
     s.execute(insert_stmt_address)
-    #raise Exception
-#raise Exception
-#except:
-# print('exception')
-#sess.rollback()
-#finally:
-#    sess.close()
-
-    #sess.close()
-
-
-
-#print(psutil.net_connections(kind='tcp'))
-
-#conn.execute(on_duplicate_key_stmt)
 
