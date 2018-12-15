@@ -40,6 +40,8 @@ class mysql_clazz:
                 session.commit()
             except:
                 session.rollback()
+            finally:
+                session.close()
         else:
             print('type is not None {}'.format(type))
             session.close()

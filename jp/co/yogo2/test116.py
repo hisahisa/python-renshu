@@ -30,8 +30,6 @@ on_duplicate_key_stmt = insert_stmt.on_duplicate_key_update(
     age=insert_stmt.inserted.age
 )
 
-# コネクションとセッションを結びつける
-
 with mysql_clazz() as s:
     s.execute(on_duplicate_key_stmt)
     s.execute(insert_stmt_address)
