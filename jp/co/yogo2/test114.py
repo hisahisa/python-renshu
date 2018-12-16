@@ -2,19 +2,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
+CHAR_CODE = "utf8"
+
 # MySQLのDBの設定
 DATABASE = 'mysql://%s:%s@%s/%s?charset=%s' % (
     "root",
     "",
     "127.0.0.1",
     "jawikipedia",
-    "utf8"
+    CHAR_CODE
 )
 
 # Engine生成 DBとのAPIの役割を果たすもよう
 engine = create_engine(
     DATABASE,
-    encoding="utf-8",
+    encoding=CHAR_CODE,
     echo=True  # True=SQL出力
 )
 
