@@ -1,6 +1,6 @@
 import sys
 from sqlalchemy import Column, UniqueConstraint, Integer, String
-from jp.co.yogo2.test114 import Base
+from jp.co.yogo2.test114 import Base, engine
 
 class User(Base):
     """
