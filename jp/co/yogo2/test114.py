@@ -1,26 +1,25 @@
-from sqlalchemy import create_engine, table, Column, UniqueConstraint, Integer, String, Sequence
-from sqlalchemy.orm import scoped_session, sessionmaker, Session
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # mysqlのDBの設定
-DATABASE = 'mysql://%s:%s@%s/%s?charset=utf8' % (
+DATABASE = 'mysql://%s:%s@%s/%s?charset=%s' % (
     "root",
     "",
     "127.0.0.1",
     "jawikipedia",
+    "utf8"
 )
 engine = create_engine(
     DATABASE,
     encoding="utf-8",
-    echo=True  # Trueだと実行のたびにSQLが出力される
+    echo=True  # True=SQL出力
 )
 
 # Sessionの作成
 session = scoped_session(
-    # ORM実行時の設定。自動コミットするか、自動反映するなど。
+    # ORM実行時の設定。デフォ(autoflush=True, autocommit=False)
     sessionmaker(
-    #autocommit = True,
-    #autoflush = False,
     bind = engine
     )
 )
@@ -29,7 +28,8 @@ session = scoped_session(
 Base = declarative_base()
 Base.query = session.query_property()
 
-class mysql_clazz:
+
+class YieldMysqlTran:
 
     def __enter__(self):
         return session
@@ -45,8 +45,3 @@ class mysql_clazz:
         else:
             print('type is not None {}'.format(type))
             session.close()
-
-
-
-
-

@@ -1,5 +1,6 @@
 import sys
-from jp.co.yogo2.test114 import *
+from sqlalchemy import Column, UniqueConstraint, Integer, String
+from jp.co.yogo2.test114 import Base
 
 class User(Base):
     """
