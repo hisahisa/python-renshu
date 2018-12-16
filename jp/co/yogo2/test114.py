@@ -18,20 +18,19 @@ engine = create_engine(
     echo=True  # True=SQL出力
 )
 
-# Sessionの作成 sessionmakerをscoped_sessionでラップするとsessionがシングルトンになるもよう
-session = scoped_session(
-    # ORM実行時の設定。デフォ(autoflush=True, autocommit=False)
-    sessionmaker(
-    bind = engine
-    )
-)
 
-# modelで使用するBaseクラスを生成するもよう
-Base = declarative_base()
-Base.query = session.query_property()
-
-
-class YieldMysqlTran:
+class YieldMysql:
+    def __init__(self, autoflush=True, autocommit=False):
+        # Sessionの作成 sessionmakerをscoped_sessionでラップするとsessionがシングルトンになるもよう
+        global session
+        session = scoped_session(
+            # ORM実行時の設定。デフォ(autoflush=True, autocommit=False)
+            sessionmaker(
+                autoflush=True,
+                autocommit=False,
+                bind=engine
+            )
+        )
 
     def __enter__(self):
         return session
@@ -47,3 +46,8 @@ class YieldMysqlTran:
         else:
             print('type is not None {}'.format(type))
             session.close()
+
+
+# modelで使用するBaseクラスを生成するもよう
+Base = declarative_base()
+Base.query = YieldMysql().__enter__().query_property()
