@@ -20,6 +20,9 @@ def testx2():
         t = map(lambda x: dict((y ,df.iat[x, HEADER.index(y)]) for y in Y), X)
         print(list(t))
 
+# --- aaa
+# --- bbb
+
 
 testx2()
 
