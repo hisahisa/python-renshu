@@ -21,6 +21,8 @@ def testx2():
         print(list(t))
 
 
+# -- mixed renshu1
+
 testx2()
 
 
