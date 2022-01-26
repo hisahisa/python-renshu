@@ -22,6 +22,8 @@ def testx2():
 
 
 # -- mixed renshu1
+# -- mixed renshu2
+# -- mixed renshu3
 
 testx2()
 
