@@ -1,0 +1,51 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "FunctionUnderscorereportLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/function_report_dev"
+      }
+    },
+    "FunctionUnderscorereportLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "sls-my-deploy",
+          "S3Key": "serverless/function-report/dev/1646640880564-2022-03-07T08:14:40.564Z/function-report.zip"
+        },
+        "FunctionName": "function_report_dev",
+        "Handler": "function_report.lambda_handler",
+        "MemorySize": 1024,
+        "Role": "arn:aws:iam::496070752858:role/YFunctionReportLambdaInvokeDevRole",
+        "Runtime": "python3.7",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "ENV": "dev"
+          }
+        },
+        "VpcConfig": {
+          "SecurityGroupIds": [
+            "sg-0e298b828ba332356"
+          ],
+          "SubnetIds": [
+            "subnet-03cacb40a9094779f"
+          ]
+        },
+        "Layers": [
+          "arn:aws:lambda:ap-northeast-1:496070752858:layer:utils:1"
+        ]
+      },
+      "DependsOn": [
+        "FunctionUnderscorereportLogGroup"
+      ]
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": "sls-my-deploy"
+    }
+  }
+}

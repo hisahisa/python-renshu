@@ -1,0 +1,16 @@
+service:
+  name: function-report2
+
+provider:
+  name: aws
+  runtime: python3.7
+  deploymentBucket:
+    name: sls-my-deploy
+
+functions:
+  y_function_renshu:
+    handler: handler_x.lambda_handler
+#    provisionedConcurrency: 5
+    reservedConcurrency: 1
+#    events:
+#      - schedule: cron(0 7 * * ? *)

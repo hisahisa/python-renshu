@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  serverless:
+    container_name: y-function-serverless
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: y1-function-serverless
+    command:
+        - tail
+        - -f
+        - /dev/null
+    volumes:
+      # 各自のcredentialsのディレクトリを指定すること
+      - ~/.aws/config:/home/circleci/.aws/config
+      - ~/.aws/credentials:/home/circleci/.aws/credentials
+      - ./:/home/circleci/project/
+      - node_modules:/home/circleci/project/node_modules
+    environment:
+      PYTHONPATH: /home/circleci/project/layers/utils/layer
+      AWS_PROFILE: sls_ope
+      # 上記でマウントしたcredentialsに
+      # https://daconsortium.atlassian.net/wiki/spaces/YIELDONE/pages/492437595/AWS で取得したセキュリテイ情報を以下記述する
+      # 例：
+      # [yieldone_mfa]
+      # aws_session_token=xxx
+      # aws_secret_access_key=yyy
+      # aws_access_key_id=zzz
+      # aws_security_token=aaa
+    extra_hosts:
+      - "somehost:162.242.195.82"
+
+volumes:
+  node_modules:
+    driver: local

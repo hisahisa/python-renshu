@@ -1,0 +1,59 @@
+service:
+  name: y-function-report
+
+plugins:
+  - serverless-python-requirements
+provider:
+  name: aws
+  runtime: python3.7
+  region: ap-northeast-1
+  stage: ${opt:stage, self:custom.defaultStage}
+  deploymentBucket:
+    name: sls-my-deploy
+  stackName: ${self:service}-${self:provider.stage}
+  versionFunctions: false
+  environment:
+    ENV: ${opt:stage, self:custom.defaultStage}
+#  vpc:
+#    securityGroupIds:
+#      - ${self:custom.config.${self:provider.stage}.security_group}
+#    subnetIds:
+#      - ${self:custom.config.${self:provider.stage}.subnet}
+
+custom:
+  defaultStage: dev
+  functionName: y-function-report
+  config:
+    dev:
+#      security_group: sg-0e298b828ba332356
+#      subnet: subnet-03cacb40a9094779f
+      logLevel: DEBUG
+      role: arn:aws:iam::162552521016:role/YFunctionReportLambdaInvokeDevRole
+      layer:
+        - arn:aws:lambda:ap-northeast-1:162552521016:layer:utils:1
+    stg:
+      logLevel: INFO
+      role: arn:aws:iam::162552521016:role/YFunctionReportLambdaInvokeStgRole
+      layer:
+        - arn:aws:lambda:ap-northeast-1:162552521016:layer:utils:1
+    prod:
+      logLevel: INFO
+      role: arn:aws:iam::162552521016:role/YFunctionReportLambdaInvokeProdRole
+      layer:
+        - arn:aws:lambda:ap-northeast-1:162552521016:layer:utils:1
+
+functions:
+  y_function_report:
+    name: ${self:custom.functionName}_${self:provider.stage}
+    description: '[${self:provider.stage}] provider the test report.'
+    handler: y-function-report.lambda_handler
+    role: ${self:custom.config.${self:provider.stage}.role}
+    layers: ${self:custom.config.${self:provider.stage}.layer}
+    environment:
+      LOG_LEVEL: ${self:custom.config.${self:provider.stage}.logLevel}
+    timeout: 300
+    reservedConcurrency: 1
+    events:
+      - schedule: cron(0 7 * * ? *)
+#    tags:
+#      Environment: ${self:custom.config.${self:provider.stage}.stage_formal}

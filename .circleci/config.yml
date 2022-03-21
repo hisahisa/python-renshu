@@ -2,25 +2,69 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  aws-cli: circleci/aws-cli@1.2.1
+  docker: circleci/docker@1.5.0
+
+executors:
+  python:
+    docker:
+      - image: y1-function-serverless
+#        auth:
+#          username: $DOCKER_HUB_USERNAME
+#          password: $DOCKER_HUB_PULL_ACCESS_TOKEN
+#        environment:
+#          SERVERLESS_VERSION: 1.83.3
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  test1:
+    parameters:
+      target_dir:
+        description: "Specitfy the directory to test"
+        type: string
+    executor:
+      name: python
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Setup pip
+          working_directory: ./<< parameters.target_dir >>/
+          command: |
+            echo << parameters.target_dir >>
+            echo ${HOME}
+#            pip install -r ${HOME}/project/requirements_test.txt
+#      - run:
+#          name: Run pyflakes << parameters.target_dir >>
+#          working_directory: ./<< parameters.target_dir >>/
+#          command: |
+#            pyflakes .
+#      - run:
+#          name: Run pytest << parameters.target_dir >>
+#          working_directory: ./<< parameters.target_dir >>/
+#          command: |
+#            pytest .
+#  say-hello:
+#    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+#    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+#    docker:
+#      - image: y1-function-serverless
+#    # Add steps to the job
+#    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+#    steps:
+#      - checkout
+#      - run:
+#          name: "Say hello"
+#          command: "echo Hello, World!"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
+      - test1:
+          name: y-test-report-test
+          target_dir: functions/y-test-report
+#          context: docker-hub-pull-creds
+#      - say-hello

@@ -1,0 +1,61 @@
+service:
+  name: function-report
+
+plugins:
+  - serverless-python-requirements
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: ap-northeast-1
+  stage: dev
+  deploymentBucket:
+    name: sls-my-deploy
+  stackName: function-report-dev
+  versionFunctions: false
+  environment:
+    ENV: dev
+  vpc:
+    securityGroupIds:
+      - sg-0e298b828ba332356
+    subnetIds:
+      - subnet-03cacb40a9094779f
+
+#custom:
+#  defaultStage: dev
+#  functionName: y_function_report
+#  config:
+#    dev:
+#      security_group: sg-0e298b828ba332356
+#      subnet: subnet-03cacb40a9094779f
+#      logLevel: DEBUG
+#      role: arn:aws:iam::162552521016:role/YFunctionReportLambdaInvokeDevRole
+#      layer:
+#        - arn:aws:lambda:ap-northeast-1:162552521016:layer:utils:1
+#    stg:
+#      logLevel: INFO
+#      role: arn:aws:iam::162552521016:role/YFunctionReportLambdaInvokeStgRole
+#      layer:
+#        - arn:aws:lambda:ap-northeast-1:162552521016:layer:utils:1
+#    prod:
+#      logLevel: INFO
+#      role: arn:aws:iam::162552521016:role/YFunctionReportLambdaInvokeProdRole
+#      layer:
+#        - arn:aws:lambda:ap-northeast-1:162552521016:layer:utils:1
+
+functions:
+  function_report:
+    name: function_report_dev
+    # description: '[${self:provider.stage}] provider the test report.'
+    handler: function_report.lambda_handler
+    role: arn:aws:iam::496070752858:role/YFunctionReportLambdaInvokeDevRole
+    layers:
+      - arn:aws:lambda:ap-northeast-1:496070752858:layer:utils:1
+#    environment:
+#      LOG_LEVEL: ${self:custom.config.${self:provider.stage}.logLevel}
+#    timeout: 300
+#    reservedConcurrency: 1
+#    events:
+#      - schedule: cron(0 7 * * ? *)
+#    tags:
+#      Environment: ${self:custom.config.${self:provider.stage}.stage_formal}
