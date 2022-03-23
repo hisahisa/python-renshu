@@ -43,9 +43,9 @@ jobs:
 workflows:
   lambda:
     jobs:
-#      - test:
-#          name: test-report-test
-          #target_dir: functions/test-report
       - test:
-          #name: test-report-test2
+          name: test-report-test
+          target_dir: functions/test-report
+      - test:
+          name: test-report-test2
           target_dir: functions/test-report2
