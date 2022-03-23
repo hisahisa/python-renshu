@@ -1,5 +1,5 @@
-import pandas as pd
-from utils.layer.util.mysql import Mysql
+# import pandas as pd
+# from utils.layer.util.mysql import Mysql
 
 
 def lambda_handler(event, context):
