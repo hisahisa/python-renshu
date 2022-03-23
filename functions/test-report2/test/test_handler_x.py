@@ -1,4 +1,4 @@
-from handler_x import lambda_handler
+from functions.test-report2.handler_x import lambda_handler
 
 
 def test_lambda_handler():
